@@ -1,9 +1,7 @@
 package vn.edu.iuh.fit.www_lab05.backend.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import vn.edu.iuh.fit.www_lab05.backend.enums.SkillType;
 import java.util.List;
 
@@ -12,6 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "skill")
 @Data
+
 @NoArgsConstructor
 @AllArgsConstructor
 public class Skill {
@@ -28,5 +27,8 @@ public class Skill {
 
     @OneToMany(mappedBy = "skill")
     private List<JobSkill>jobSkills;
+
+    public Skill(String java, SkillType skillType, String javaProgrammingLanguage) {
+    }
 
 }

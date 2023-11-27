@@ -42,9 +42,7 @@ public class CandidateController {
                                           @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
-        /*Page<Candidate> candidatePage= candidateServices.findPaginated(
-                PageRequest.of(currentPage - 1, pageSize)
-        );*/
+
         Page<Candidate> candidatePage = candidateServices.findAll(currentPage - 1,
                 pageSize, "id", "asc");
 

@@ -11,10 +11,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<h1>HOME</h1>
-<a>aaaaa</a>
-<p>qeqweqwe</p>
-<a>aaaaa</a>
+<div class="container">
+    <h1>HOME</h1>
+    <ul>
+        <li><a th:href="@{/job/list}">Job Listings</a></li>
+        <li><a th:href="@{/can/candidates}">Candidate Listings</a></li>
+        <li><a th:href="@{/company/list}">Company Listings</a></li>
 
+    </ul>
+
+</div>
 </body>
 </html>
