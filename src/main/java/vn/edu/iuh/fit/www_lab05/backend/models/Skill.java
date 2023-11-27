@@ -1,10 +1,10 @@
-package vn.edu.iuh.fit.www_lab05.models;
+package vn.edu.iuh.fit.www_lab05.backend.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import vn.edu.iuh.fit.www_lab05.enums.SkillType;
+import vn.edu.iuh.fit.www_lab05.backend.enums.SkillType;
 import java.util.List;
 
 //Read skill list at: https://www.yourdictionary.com/articles/examples-skills-list
@@ -26,7 +26,6 @@ public class Skill {
     @Column(name = "skill_desc", nullable = false, length = 300)
     private String skillDescription;
 
-    //====================
     @OneToMany(mappedBy = "skill")
     private List<JobSkill>jobSkills;
 

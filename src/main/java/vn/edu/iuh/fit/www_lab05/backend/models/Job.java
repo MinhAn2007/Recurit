@@ -1,4 +1,4 @@
-package vn.edu.iuh.fit.www_lab05.models;
+package vn.edu.iuh.fit.www_lab05.backend.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,8 +21,6 @@ public class Job {
     @Column(name = "job_desc", length = 2000, nullable = false)
     private String description;
 
-
-//====================RELATIONSHIPS========================
     @ManyToOne
     @JoinColumn(name = "company")
     private Company company;

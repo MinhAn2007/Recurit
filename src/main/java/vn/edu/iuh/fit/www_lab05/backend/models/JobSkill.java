@@ -1,11 +1,11 @@
-package vn.edu.iuh.fit.www_lab05.models;
+package vn.edu.iuh.fit.www_lab05.backend.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import vn.edu.iuh.fit.www_lab05.enums.SkillLevel;
-import vn.edu.iuh.fit.www_lab05.ids.JobSkillID;
+import vn.edu.iuh.fit.www_lab05.backend.enums.SkillLevel;
+import vn.edu.iuh.fit.www_lab05.backend.ids.JobSkillID;
 
 @Entity
 @Table(name = "job_skill")

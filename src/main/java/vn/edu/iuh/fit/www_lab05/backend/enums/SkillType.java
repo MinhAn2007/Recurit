@@ -1,4 +1,4 @@
-package vn.edu.iuh.fit.www_lab05.enums;
+package vn.edu.iuh.fit.www_lab05.backend.enums;
 
 public enum SkillType {
     UNSPECIFIC(0),

@@ -1,4 +1,4 @@
-package vn.edu.iuh.fit.www_lab05.models;
+package vn.edu.iuh.fit.www_lab05.backend.models;
 
 import com.neovisionaries.i18n.CountryCode;
 import jakarta.persistence.*;
@@ -36,8 +36,15 @@ public class Address {
         this.country = country;
     }
 
+    public Address(String addressString) {
+    }
+
     @Override
     public String toString() {
         return number + ", " + street + ", " + city + ", " + zipcode + ", " + country.getName();
+    }
+    public static Address fromString(String addressString) {
+
+         return new Address(addressString);
     }
 }

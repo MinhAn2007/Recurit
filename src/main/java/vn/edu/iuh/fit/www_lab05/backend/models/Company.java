@@ -1,4 +1,4 @@
-package vn.edu.iuh.fit.www_lab05.models;
+package vn.edu.iuh.fit.www_lab05.backend.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,8 +37,10 @@ public class Company {
     @Column(name = "about", length = 2000)
     private String about;
 
-    //==================RELATIONSHIPS=====================
     @OneToMany(mappedBy = "company")
-//    @JoinColumn(name = "jobs")
     private List<Job> jobs;
+
+    public Company(String name) {
+        this.name = name;
+    }
 }

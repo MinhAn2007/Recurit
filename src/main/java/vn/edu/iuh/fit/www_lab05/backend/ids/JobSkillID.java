@@ -1,7 +1,8 @@
-package vn.edu.iuh.fit.www_lab05.ids;
+package vn.edu.iuh.fit.www_lab05.backend.ids;
 
-import vn.edu.iuh.fit.www_lab05.models.Job;
-import vn.edu.iuh.fit.www_lab05.models.Skill;
+import vn.edu.iuh.fit.www_lab05.backend.models.Job;
+import vn.edu.iuh.fit.www_lab05.backend.models.Skill;
+
 import java.io.Serializable;
 
 public class JobSkillID implements Serializable {
