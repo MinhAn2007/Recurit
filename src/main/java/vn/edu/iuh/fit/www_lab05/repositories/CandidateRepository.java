@@ -1,0 +1,9 @@
+package vn.edu.iuh.fit.www_lab05.repositories;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import vn.edu.iuh.fit.www_lab05.models.Candidate;
+
+
+public interface CandidateRepository extends JpaRepository<Candidate, Long> {
+}
