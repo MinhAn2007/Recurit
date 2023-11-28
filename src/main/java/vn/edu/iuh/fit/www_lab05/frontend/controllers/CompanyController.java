@@ -1,11 +1,13 @@
 package vn.edu.iuh.fit.www_lab05.frontend.controllers;
 
+import com.neovisionaries.i18n.CountryCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import vn.edu.iuh.fit.www_lab05.backend.enums.SkillLevel;
 import vn.edu.iuh.fit.www_lab05.backend.enums.SkillType;
 import vn.edu.iuh.fit.www_lab05.backend.models.Company;
@@ -42,25 +44,29 @@ public class CompanyController {
         return "company/list";
     }
 
-    @GetMapping("/{companyId}/jobs")
-    public String showCompanyJobsForm(@PathVariable Long companyId, Model model) {
-        Optional<Company> companyOptional = companyService.getCompanyById(companyId);
+    @GetMapping("/addJob/{companyId}")
+    public ModelAndView showCompanyJobsForm(@PathVariable Long companyId) {
+        ModelAndView modelAndView = new ModelAndView("company/post");
 
-        if (companyOptional.isPresent()) {
-            Company company = companyOptional.get();
-            Job job = new Job();
+        Job job = new Job();
+        List<JobSkill> jobSkills = job.getJobSkills();
+        List<Skill> skills = new ArrayList<>();
 
-            List<Skill> skills = skillService.getSkill();
-
-
-            model.addAttribute("company", company);
-            model.addAttribute("job", job);
-            model.addAttribute("skills", skills);
-
-            return "company/post";
-        } else {
-            throw new IllegalArgumentException("Company not found with ID: " + companyId);
+        if (jobSkills != null) {
+            for (JobSkill jobSkill : jobSkills) {
+                if (jobSkill.getSkill() != null) {
+                    skills.add(jobSkill.getSkill());
+                }
+            }
         }
+
+        modelAndView.addObject("job",job);
+        modelAndView.addObject("company", companyId);
+        modelAndView.addObject("skills", skills);
+        modelAndView.addObject("type", SkillType.values());
+
+
+        return modelAndView;
     }
 
     @PostMapping("/{companyId}/jobs")
