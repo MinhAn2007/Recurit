@@ -111,7 +111,16 @@ public class CompanyController {
 
         return "redirect:/company/details/" + companyId;
     }
+    @PostMapping("/addSkill")
+    public String addJobSkill(
+            @ModelAttribute("job") Skill skill,
 
+            Model model) {
+
+        skillService.addSkill(skill);
+
+        return "redirect:/company/list";
+    }
     @GetMapping("/show-add-job-skill/{jobId}/{companyId}")
     public ModelAndView showAddJobSkillForm(Model model, @PathVariable("jobId") long jobId, @PathVariable("companyId") long companyId) {
         ModelAndView modelAndView = new ModelAndView();
@@ -122,6 +131,17 @@ public class CompanyController {
         modelAndView.addObject("skills", skillService.getSkill());
         modelAndView.addObject("jobSkill", jobSkill);
         modelAndView.setViewName("company/addJobSkill");
+
+        return modelAndView;
+    }
+    @GetMapping("/show-add-skill")
+    public ModelAndView showAddJobSkillForm(Model model) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        Skill skill = new Skill();
+        modelAndView.addObject("skill", skill);
+
+        modelAndView.setViewName("company/addSkill");
 
         return modelAndView;
     }
