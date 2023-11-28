@@ -2,88 +2,147 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Company Jobs Form</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 
-<h2>Company Jobs Form</h2>
+<div class="container mt-5">
+    <h2>Company Jobs Form</h2>
 
-<form th:object="${job}" method="post">
-    <input type="hidden" th:field="*{company.id}" th:value="${company}" />
-    <select id="externalSkillLevelSelect">
-        <script th:inline="javascript">
-            var skillLevels = /*[[${T(vn.edu.iuh.fit.www_lab05.backend.enums.SkillLevel).values()}]]*/;
-            console.log(skillLevels)
-            skillLevels.forEach(function(level) {
-                document.write('<option value="' + level + '">' + level + '</option>');
-            });
-        </script>
-    </select>
-    <h3>Add Skills:</h3>
+    <form th:object="${job}" method="post">
+        <div class="form-group">
+            <label >Company ID:</label>
+            <input type="hidden" th:field="*{company.id}" th:value="${company}" class="form-control" />
+        </div>
 
-    <div class="mb-3" th:each="skill, status : ${job.jobSkills}">
-        <select class="form-select" th:field="${skill.skill.type}" id="skillType">
+        <div class="form-group">
+            <label >Job Name:</label>
+            <input type="text" th:field="*{name}" th:value="${job.name}" class="form-control" />
+        </div>
 
-            <option th:each="type : ${type}"
-                    th:value="${type}" th:text="${type.name}">
-            </option>
+        <div class="form-group">
+            <label >Job Description:</label>
+            <textarea type="text" th:field="*{description}" th:value="${job.description}" class="form-control"></textarea>
+        </div>
 
-        </select>
-    </div>
-    <div id="skills-container">
+        <h3>Add Job Skill</h3>
+        <div id="section">
+            <div class="mb-3" th:each="skill, status : *{jobSkills}">
+                <div class="form-group">
+                    <label>Skill Type:</label>
+                    <select class="form-select" th:field="*{jobSkills[__${status.index}__].skill.type}">
+                        <option th:each="type : ${T(vn.edu.iuh.fit.www_lab05.backend.enums.SkillType).values()}"
+                                th:value="${type}" th:text="${type}"></option>
+                    </select>
+                </div>
 
+                <div class="form-group">
+                    <label >Skill Level:</label>
+                    <select class="form-select mb-3" th:field="*{jobSkills[__${status.index}__].skillLevel}">
+                        <option   class="form-select mb-3" th:each="level : ${T(vn.edu.iuh.fit.www_lab05.backend.enums.SkillLevel).values()}"
+                                th:value="${level}" th:text="${level}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label >Skill Name:</label>
+                    <input type="text" th:field="*{jobSkills[__${status.index}__].skill.skillName}" placeholder="Enter Skill Name" class="form-control" />
+                </div>
 
-    </div>
+                <div class="form-group">
+                    <label >Skill Description:</label>
+                    <input type="text" th:field="*{jobSkills[__${status.index}__].skill.skillDescription}" placeholder="Enter Skill Description" class="form-control" />
+                </div>
 
-    <!-- Additional input field outside the skills container -->
-    <div class="mb-3">
-        <label for="additionalInfo">Additional Info:</label>
-        <input type="text" th:field="${job.jobSkills}" id="additionalInfo" placeholder="Enter Additional Info"/>
-    </div>
+                <div class="form-group">
+                    <label>More Info:</label>
+                    <input type="text" th:field="*{jobSkills[__${status.index}__].moreInfo}" placeholder="Enter moreInfo JobSkill" class="form-control" />
+                </div>
+            </div>
+        </div>
 
-    <button type="button" onclick="addSkill()">Add Skill</button>
+        <button type="button" onclick="addSkill()" class="btn btn-primary">Add JobSkill</button>
+        <button type="submit" class="btn btn-success">Save Job</button>
+    </form>
+</div>
 
-    <button type="submit">Save Job</button>
-</form>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script th:inline="javascript">
     function addSkill() {
-        var container = document.getElementById('skills-container');
+        var container = document.getElementById('section');
         var newSkillContainer = document.createElement('div');
+        var skillTitle = document.createElement('h5');
+        skillTitle.innerText = 'Skill '
+        newSkillContainer.appendChild(skillTitle);
+
+        newSkillContainer.classList.add('mb-4');
+
+
+        var labelType = document.createElement('label');
+        labelType.innerText = 'Skill Type:';
+        newSkillContainer.appendChild(labelType);
 
         var newSkillTypeSelect = document.createElement('select');
-        newSkillTypeSelect.setAttribute('class', 'form-select');
-        newSkillTypeSelect.setAttribute('name', 'jobSkills[' + container.children.length + '].skill.type');
-
-        var types = /*[[${T(vn.edu.iuh.fit.www_lab05.backend.enums.SkillType).values()}]]*/;
-
-        for (var i = 0; i < types.length; i++) {
+        newSkillTypeSelect.setAttribute('th:field', '*{newSkills[__${job.newSkills.length}__].skill.type}');
+        newSkillTypeSelect.classList.add('form-select');
+        var skillTypes = /*[[${T(vn.edu.iuh.fit.www_lab05.backend.enums.SkillType).values()}]]*/;
+        skillTypes.forEach(function (type) {
             var option = document.createElement('option');
-            option.setAttribute('value', types[i]);
-            option.text = types[i];
+            option.value = type;
+            option.text = type;
             newSkillTypeSelect.appendChild(option);
-        }
-
+        });
         newSkillContainer.appendChild(newSkillTypeSelect);
+
+        var labelLevel = document.createElement('label');
+        labelLevel.innerText = 'Skill Level:';
+        newSkillContainer.appendChild(labelLevel);
+
+        var newSkillLevelSelect = document.createElement('select');
+        newSkillLevelSelect.setAttribute('th:field', '*{newSkills[__${job.newSkills.length}__].skillLevel}');
+        newSkillLevelSelect.classList.add('form-select', 'mb-3'); // Thêm class mb-3 để tạo xuống hàng
+        var skillLevels = /*[[${T(vn.edu.iuh.fit.www_lab05.backend.enums.SkillLevel).values()}]]*/;
+        skillLevels.forEach(function (level) {
+            var option = document.createElement('option');
+            option.value = level;
+            option.text = level;
+            newSkillLevelSelect.appendChild(option);
+        });
+        newSkillContainer.appendChild(newSkillLevelSelect);
 
         var newSkillNameInput = document.createElement('input');
         newSkillNameInput.setAttribute('type', 'text');
-        newSkillNameInput.setAttribute('name', 'jobSkills[' + container.children.length + '].skill.skillName');
+        newSkillNameInput.setAttribute('th:field', '*{newSkills[__${job.newSkills.length}__].skill.skillName}');
         newSkillNameInput.setAttribute('placeholder', 'Enter Skill Name');
+        newSkillNameInput.classList.add('form-control');
         newSkillContainer.appendChild(newSkillNameInput);
 
-        var newSkillDes = document.createElement('input');
-        newSkillDes.setAttribute('type', 'text');
-        newSkillDes.setAttribute('name', 'jobSkills[' + container.children.length + '].skill.skillDescription');
-        newSkillDes.setAttribute('placeholder', 'Enter Skill Description');
-        newSkillContainer.appendChild(newSkillDes);
+        var labelDescription = document.createElement('label');
+        labelDescription.innerText = 'Skill Description:';
+        newSkillContainer.appendChild(labelDescription);
+
+        var newSkillDesInput = document.createElement('input');
+        newSkillDesInput.setAttribute('type', 'text');
+        newSkillDesInput.setAttribute('th:field', '*{newSkills[__${job.newSkills.length}__].skill.skillDescription}');
+        newSkillDesInput.setAttribute('placeholder', 'Enter Skill Description');
+        newSkillDesInput.classList.add('form-control');
+        newSkillContainer.appendChild(newSkillDesInput);
+
+        var labelMoreInfo = document.createElement('label');
+        labelMoreInfo.innerText = 'More Info:';
+        newSkillContainer.appendChild(labelMoreInfo);
+
+        var newInfo = document.createElement('input');
+        newInfo.setAttribute('type', 'text');
+        newInfo.setAttribute('th:field', '*{newSkills[__${job.newSkills.length}__].moreInfo}');
+        newInfo.setAttribute('placeholder', 'Enter moreInfo JobSkill');
+        newInfo.classList.add('form-control');
+        newSkillContainer.appendChild(newInfo);
 
         container.appendChild(newSkillContainer);
-        skillLevels.forEach(function(level) {
-            var option = document.createElement('option');
-            option.value = level;
-            option.text = level.name;
-            newSkillTypeSelect.appendChild(option);
-        });
     }
 </script>
 
