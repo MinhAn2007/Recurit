@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import vn.edu.iuh.fit.www_lab05.backend.enums.SkillLevel;
 import vn.edu.iuh.fit.www_lab05.backend.enums.SkillType;
-import vn.edu.iuh.fit.www_lab05.backend.models.Company;
-import vn.edu.iuh.fit.www_lab05.backend.models.Job;
-import vn.edu.iuh.fit.www_lab05.backend.models.JobSkill;
-import vn.edu.iuh.fit.www_lab05.backend.models.Skill;
+import vn.edu.iuh.fit.www_lab05.backend.models.*;
 import vn.edu.iuh.fit.www_lab05.backend.services.CompanyService;
 import vn.edu.iuh.fit.www_lab05.backend.services.JobService;
 import vn.edu.iuh.fit.www_lab05.backend.services.SkillService;
@@ -43,7 +40,13 @@ public class CompanyController {
         model.addAttribute("companies", companies);
         return "company/list";
     }
-
+    @GetMapping("/details/{companyId}")
+    public String getCompany(Model model, @PathVariable Long companyId) {
+        Company company = companyService.getCompanyById(companyId)
+                .orElseThrow(() -> new RuntimeException("Company not found")); // Replace with a more appropriate exception
+        model.addAttribute("company", company);
+        return "company/details";
+    }
     @GetMapping("/addJob/{companyId}")
     public ModelAndView showCompanyJobsForm(@PathVariable Long companyId) {
         ModelAndView modelAndView = new ModelAndView("company/post");
@@ -68,6 +71,33 @@ public class CompanyController {
 
         return modelAndView;
     }
+    @GetMapping("/show-add/{companyId}")
+    public ModelAndView showAddJobForm(Model model, @PathVariable("companyId") long companyId) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        Job job = new Job();
+        modelAndView.addObject("companyId",companyId);
+        System.out.println(companyId);
+
+        modelAndView.addObject("job",job);
+        modelAndView.setViewName("company/addJob");
+
+        return modelAndView;
+    }
+    @PostMapping("/add")
+    public String addJob(
+            @ModelAttribute("job") Job job,
+            @RequestParam("companyId") long companyId,
+            Model model) {
+
+        Company company = companyService.getCompanyById(companyId) .orElseThrow(() -> new IllegalArgumentException("Invalid companyId posting Id:" + companyId));
+        job.setCompany(company);
+
+        jobService.save(job);
+
+        return "redirect:/company/details/" + companyId;
+    }
+
 
     @PostMapping("/{companyId}/jobs")
     public String saveJob(@ModelAttribute("job")  Job job,

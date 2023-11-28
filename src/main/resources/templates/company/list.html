@@ -25,6 +25,8 @@
             <td th:text="${company.address}"></td>
             <td>
                 <a th:href="@{/company/addJob/{companyId}(companyId=${company.id})}" class="btn btn-primary">Add Job</a>
+                <a th:href="@{/company/company/{companyId}(companyId=${company.id})}" class="btn btn-primary">Details</a>
+
             </td>
         </tr>
         </tbody>

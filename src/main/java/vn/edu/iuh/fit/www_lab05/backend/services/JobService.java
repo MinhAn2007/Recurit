@@ -32,8 +32,8 @@ public class JobService {
         return jobRepository.findById(id);
     }
 
-    public Job saveJobPosting(Job jobPosting) {
-        return jobRepository.save(jobPosting);
+    public void save(Job jobPosting) {
+         jobRepository.save(jobPosting);
     }
 
     public void deleteJobPosting(Long id) {

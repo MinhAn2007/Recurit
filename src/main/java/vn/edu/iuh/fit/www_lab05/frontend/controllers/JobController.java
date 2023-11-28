@@ -47,28 +47,7 @@ public class JobController {
         }
         return "/job/list";
     }
-    @GetMapping("/create")
-    public String showCreateForm(Model model) {
-        model.addAttribute("jobPosting", new Job());
-        List<Company> companies = companyService.getAllCompanies();
-        model.addAttribute("companies", companies);
-        return "job/create";
-    }
 
-    @PostMapping("/create")
-    public String createJobPosting(@ModelAttribute Job jobPosting) {
-        Long companyId = jobPosting.getCompany().getId();
-        Optional<Company> selectedCompanyOptional = companyService.getCompanyById(companyId);
-        if (selectedCompanyOptional.isPresent()) {
-            Company selectedCompany = selectedCompanyOptional.get();
-            jobPosting.setCompany(selectedCompany);
-        } else {
-            throw new IllegalArgumentException("Company not found with ID: " + companyId);
-        }
-
-        jobService.saveJobPosting(jobPosting);
-        return "redirect:/job/list";
-    }
 
 
     @GetMapping("/edit/{id}")
@@ -78,11 +57,7 @@ public class JobController {
         model.addAttribute("jobPosting", jobPosting);
         return "job/edit";
     }
-    @PostMapping("/update/{id}")
-    public String editJobPosting( @ModelAttribute Job jobPosting) {
-        jobService.saveJobPosting(jobPosting);
-        return "redirect:/job";
-    }
+
 
     @GetMapping("/delete/{id}")
     public String deleteJobPosting(@PathVariable Long id) {
