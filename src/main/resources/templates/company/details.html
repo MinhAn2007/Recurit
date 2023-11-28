@@ -41,7 +41,7 @@
             <td th:text="${job.name}"></td>
             <td th:text="${job.description}"></td>
             <td>
-                <a class="btn btn-primary" th:href="@{/company/show-add-job-skill/{jobId}(jobId=${job.id})}">Add Job Skill</a>
+                <a class="btn btn-primary" th:href="@{/company/detailsJob/{jobId}(jobId=${job.id})}">View Job Details</a>
             </td>
         </tr>
         </tbody>

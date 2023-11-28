@@ -13,6 +13,7 @@ import vn.edu.iuh.fit.www_lab05.backend.enums.SkillType;
 import vn.edu.iuh.fit.www_lab05.backend.models.*;
 import vn.edu.iuh.fit.www_lab05.backend.services.CompanyService;
 import vn.edu.iuh.fit.www_lab05.backend.services.JobService;
+import vn.edu.iuh.fit.www_lab05.backend.services.JobSkillService;
 import vn.edu.iuh.fit.www_lab05.backend.services.SkillService;
 
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ public class CompanyController {
 
     @Autowired
     private SkillService skillService;
+    @Autowired
+    private JobSkillService jobSkillService;
 
     @GetMapping("/list")
     public String getAllCompanies(Model model) {
@@ -40,13 +43,22 @@ public class CompanyController {
         model.addAttribute("companies", companies);
         return "company/list";
     }
+
     @GetMapping("/details/{companyId}")
     public String getCompany(Model model, @PathVariable Long companyId) {
         Company company = companyService.getCompanyById(companyId)
-                .orElseThrow(() -> new RuntimeException("Company not found")); // Replace with a more appropriate exception
+                .orElseThrow(() -> new RuntimeException("Company not found"));
         model.addAttribute("company", company);
         return "company/details";
     }
+    @GetMapping("/detailsJob/{jobId}")
+    public String detailsJob(Model model, @PathVariable Long jobId) {
+        Job job = jobService.getJobPostingById(jobId)
+                .orElseThrow(() -> new RuntimeException("Company not found"));
+        model.addAttribute("job", job);
+        return "company/detailsJob";
+    }
+
     @GetMapping("/addJob/{companyId}")
     public ModelAndView showCompanyJobsForm(@PathVariable Long companyId) {
         ModelAndView modelAndView = new ModelAndView("company/post");
@@ -63,7 +75,7 @@ public class CompanyController {
             }
         }
 
-        modelAndView.addObject("job",job);
+        modelAndView.addObject("job", job);
         modelAndView.addObject("company", companyId);
         modelAndView.addObject("skills", skills);
         modelAndView.addObject("type", SkillType.values());
@@ -71,26 +83,28 @@ public class CompanyController {
 
         return modelAndView;
     }
+
     @GetMapping("/show-add/{companyId}")
     public ModelAndView showAddJobForm(Model model, @PathVariable("companyId") long companyId) {
         ModelAndView modelAndView = new ModelAndView();
 
         Job job = new Job();
-        modelAndView.addObject("companyId",companyId);
+        modelAndView.addObject("companyId", companyId);
         System.out.println(companyId);
 
-        modelAndView.addObject("job",job);
+        modelAndView.addObject("job", job);
         modelAndView.setViewName("company/addJob");
 
         return modelAndView;
     }
+
     @PostMapping("/add")
     public String addJob(
             @ModelAttribute("job") Job job,
             @RequestParam("companyId") long companyId,
             Model model) {
 
-        Company company = companyService.getCompanyById(companyId) .orElseThrow(() -> new IllegalArgumentException("Invalid companyId posting Id:" + companyId));
+        Company company = companyService.getCompanyById(companyId).orElseThrow(() -> new IllegalArgumentException("Invalid companyId posting Id:" + companyId));
         job.setCompany(company);
 
         jobService.save(job);
@@ -98,41 +112,41 @@ public class CompanyController {
         return "redirect:/company/details/" + companyId;
     }
 
+    @GetMapping("/show-add-job-skill/{jobId}/{companyId}")
+    public ModelAndView showAddJobSkillForm(Model model, @PathVariable("jobId") long jobId, @PathVariable("companyId") long companyId) {
+        ModelAndView modelAndView = new ModelAndView();
 
-    @PostMapping("/{companyId}/jobs")
-    public String saveJob(@ModelAttribute("job")  Job job,
-                          @RequestParam(name = "skills") String skills,
-                          @PathVariable String companyId,
-                          BindingResult bindingResult) {
+        JobSkill jobSkill = new JobSkill();
+        modelAndView.addObject("jobId", jobId);
+        System.out.println(jobId);
+        modelAndView.addObject("skills", skillService.getSkill());
+        modelAndView.addObject("jobSkill", jobSkill);
+        modelAndView.setViewName("company/addJobSkill");
 
-        // Validate the form inputs
-        if (bindingResult.hasErrors()) {
-            // Handle validation errors, if any
-            return "company/post";
-        }
+        return modelAndView;
+    }
 
-        // Split the skills input into an array
-        String[] skillArray = skills.split(",");
+    @PostMapping("/addJobSkill")
+    public String addJobSkill(
+            @ModelAttribute("job") JobSkill jobSkill,
+            @RequestParam("jobId") long jobId,
+            @RequestParam("skillId") int skillId,
+            @RequestParam("companyId") long companyId,
+            @RequestParam("skillLevel") SkillLevel skillLevel,  // Add this parameter
 
-        // Create a new list to store JobSkills
-        List<JobSkill> jobSkills = new ArrayList<>();
+            Model model) {
 
-        // Iterate over the skills array and create JobSkill objects
-        for (String skillName : skillArray) {
-            JobSkill jobSkill = new JobSkill();
-            jobSkill.getSkill().setSkillName(skillName.trim());  // Trim to remove leading/trailing whitespaces
-            jobSkill.setJob(job);
-            // You may set other properties of JobSkill here
+        Job job = jobService.getJobPostingById(jobId).orElseThrow(() -> new IllegalArgumentException("Invalid job posting Id:" + jobId));
+        jobSkill.setJob(job);
 
-            // Add the JobSkill to the list
-            jobSkills.add(jobSkill);
-        }
+        Skill skill = skillService.findById(skillId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid skill Id:" + skillId));
+        jobSkill.setSkill(skill);
 
-        // Set the list of JobSkills in the Job object
-        job.setJobSkills(jobSkills);
+        jobSkill.setSkillLevel(skillLevel);
 
-        // Continue with the rest of your logic...
-        // For example, save the job and redirect to the company's jobs page
 
-        return "redirect:/company/" + companyId + "/jobs";
-    }}
+        jobSkillService.save(jobSkill);
+        return "redirect:/company/detailsJob/" + job.getId();
+    }
+}
