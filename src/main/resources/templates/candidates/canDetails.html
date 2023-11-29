@@ -57,6 +57,33 @@
     </table>
     <br>
     <a class="btn btn-primary" th:href="@{/can/show-add-can-skill/{candidateId}(candidateId=${candidate.id})}">Add Skill</a>
+    <h3 class="mt-4 mb-2">Recommended Jobs</h3>
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Skills</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="job : ${recommendedJobs}">
+            <td th:text="${job.id}"></td>
+            <td th:text="${job.name}"></td>
+            <td th:text="${job.description}"></td>
+            <td>
+                <ul>
+                    <li th:each="jobSkill : ${job.jobSkills}">
+                        <span th:text="${jobSkill.skill.skillName}"></span> -
+                        <span th:text="${jobSkill.skill.skillDescription}"></span><br/>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
 </div>
 
 </body>

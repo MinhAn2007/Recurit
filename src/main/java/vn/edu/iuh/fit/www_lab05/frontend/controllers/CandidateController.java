@@ -15,6 +15,7 @@ import vn.edu.iuh.fit.www_lab05.backend.repositories.AddressRepository;
 import vn.edu.iuh.fit.www_lab05.backend.repositories.CandidateRepository;
 import vn.edu.iuh.fit.www_lab05.backend.services.CandidateServices;
 import vn.edu.iuh.fit.www_lab05.backend.services.CandidateSkillService;
+import vn.edu.iuh.fit.www_lab05.backend.services.JobService;
 import vn.edu.iuh.fit.www_lab05.backend.services.SkillService;
 
 import java.util.List;
@@ -35,6 +36,8 @@ public class CandidateController {
     private CandidateSkillService candidateSkillService;
     @Autowired
     private SkillService skillService;
+    @Autowired
+    private JobService jobService;
 
     @GetMapping("/list")
     public String showCandidateList(Model model) {
@@ -111,6 +114,12 @@ public class CandidateController {
     @GetMapping("/details/{canId}")
     public String detailsCan(Model model, @PathVariable Long canId) {
         Candidate candidate = candidateServices.getCandidateById(canId);
+        List<Job> recommendedJobs = jobService.recommendJobsForCandidate(canId);
+        if (!recommendedJobs.isEmpty()) {
+            model.addAttribute("recommendedJobs", recommendedJobs);
+        } else {
+            model.addAttribute("noJobsFound", true);
+        }
         model.addAttribute("candidate", candidate);
         return "candidates/canDetails";
     }

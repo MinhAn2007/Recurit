@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import vn.edu.iuh.fit.www_lab05.backend.models.*;
 import vn.edu.iuh.fit.www_lab05.backend.services.CompanyService;
 import vn.edu.iuh.fit.www_lab05.backend.services.JobService;
+import vn.edu.iuh.fit.www_lab05.backend.services.JobSkillService;
 import vn.edu.iuh.fit.www_lab05.backend.services.SkillService;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public class JobController {
     private CompanyService companyService;
     @Autowired
     private SkillService skillService;
+    @Autowired
+    private JobSkillService jobSkillService;
     @GetMapping("/list")
     public String showCandidateListPaging(Model model,
                                           @RequestParam("page") Optional<Integer> page,
@@ -70,4 +73,5 @@ public class JobController {
 
         return "redirect:/skills";
     }
+
 }
