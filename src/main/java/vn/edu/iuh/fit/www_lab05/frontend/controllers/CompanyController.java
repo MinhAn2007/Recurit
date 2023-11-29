@@ -57,6 +57,9 @@ public class CompanyController {
         Job job = jobService.getJobPostingById(jobId)
                 .orElseThrow(() -> new RuntimeException("Company not found"));
         model.addAttribute("job", job);
+        List<Candidate> recommendedCandidates = jobService.getRecommendedCandidatesForJob(jobId);
+        model.addAttribute("recommendedCandidates", recommendedCandidates);
+
         return "company/detailsJob";
     }
 

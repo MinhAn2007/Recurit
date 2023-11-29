@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import vn.edu.iuh.fit.www_lab05.backend.models.Candidate;
+import vn.edu.iuh.fit.www_lab05.backend.models.Skill;
 import vn.edu.iuh.fit.www_lab05.backend.repositories.CandidateRepository;
 
 import java.util.Collections;
@@ -63,7 +64,12 @@ public class CandidateServices {
         return null;
     }
 
-    public void delete(long id){
+    public void delete(long id) {
         Optional<Candidate> candidate = candidateRepository.findById(id);
         candidate.ifPresent(value -> candidateRepository.delete(value));
-    }}
+    }
+    public List<Candidate> findCandidatesBySkills(List<Skill> candidateSkill) {
+        return candidateRepository.findCandidatesCandidateSkills(candidateSkill);
+    }
+
+}

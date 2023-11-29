@@ -7,12 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.iuh.fit.www_lab05.backend.models.*;
-import vn.edu.iuh.fit.www_lab05.backend.services.CompanyService;
-import vn.edu.iuh.fit.www_lab05.backend.services.JobService;
-import vn.edu.iuh.fit.www_lab05.backend.services.JobSkillService;
-import vn.edu.iuh.fit.www_lab05.backend.services.SkillService;
+import vn.edu.iuh.fit.www_lab05.backend.services.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -29,6 +27,8 @@ public class JobController {
     private SkillService skillService;
     @Autowired
     private JobSkillService jobSkillService;
+    @Autowired
+    private CandidateServices candidateServices;
     @GetMapping("/list")
     public String showCandidateListPaging(Model model,
                                           @RequestParam("page") Optional<Integer> page,
@@ -73,5 +73,4 @@ public class JobController {
 
         return "redirect:/skills";
     }
-
 }

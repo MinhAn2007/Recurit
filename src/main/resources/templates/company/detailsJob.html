@@ -42,10 +42,33 @@
         </tbody>
     </table>
 
-    <a class="btn btn-primary" th:href="@{/company/show-add-job-skill/{jobId}/{companyId}(jobId=${job.id}, companyId=${job.company.id})}">Add Job Skill</a>
+    <a class="btn btn-primary"
+       th:href="@{/company/show-add-job-skill/{jobId}/{companyId}(jobId=${job.id}, companyId=${job.company.id})}">Add
+        Job Skill</a>
+    <h3 class="mt-4 mb-4">Recommended Candidates</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Skill</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="candidate : ${recommendedCandidates}">
+            <td th:text="${candidate.fullName}"></td>
+            <td th:text="${candidate.email}"></td>
+            <td>
+                <ul>
+                    <li th:each="candidateSkills : ${candidate.candidateSkills}">
+                        <span th:text="${candidateSkills.skill.skillName}"></span> -
+                        <span th:text="${candidateSkills.skill.skillDescription}"></span><br/>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-
-
-
 </body>
 </html>

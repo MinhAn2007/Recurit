@@ -6,17 +6,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import vn.edu.iuh.fit.www_lab05.backend.enums.SkillLevel;
 import vn.edu.iuh.fit.www_lab05.backend.models.Candidate;
 import vn.edu.iuh.fit.www_lab05.backend.models.Job;
 import vn.edu.iuh.fit.www_lab05.backend.models.JobSkill;
 import vn.edu.iuh.fit.www_lab05.backend.models.Skill;
 import vn.edu.iuh.fit.www_lab05.backend.repositories.CandidateRepository;
 import vn.edu.iuh.fit.www_lab05.backend.repositories.JobRepository;
-import vn.edu.iuh.fit.www_lab05.backend.repositories.SkillRepository;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -63,4 +59,19 @@ public class JobService {
         return Collections.emptyList();
     }
 
+
+    public List<Candidate> getRecommendedCandidatesForJob(Long jobId) {
+        Job job = jobRepository.findById(jobId).orElse(null);
+
+        if (job != null) {
+            List<Skill> requiredSkills = job.getJobSkills()
+                    .stream()
+                    .map(JobSkill::getSkill)
+                    .collect(Collectors.toList());
+
+            return candidateRepository.findCandidatesCandidateSkills(requiredSkills);
+        }
+
+        return Collections.emptyList();
+    }
 }

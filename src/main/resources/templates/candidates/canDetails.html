@@ -17,7 +17,8 @@
         <div class="card-body">
             <p class="card-text"><strong>ID:</strong> <span th:text="${candidate.id}"></span></p>
             <p class="card-text"><strong>Full Name:</strong> <span th:text="${candidate.fullName}"></span></p>
-            <p class="card-text"><strong>Date of Birth:</strong> <span th:text="${#temporals.format(candidate.dob, 'yyyy-MM-dd')}"></span></p>
+            <p class="card-text"><strong>Date of Birth:</strong> <span
+                    th:text="${#temporals.format(candidate.dob, 'yyyy-MM-dd')}"></span></p>
             <p class="card-text"><strong>Address:</strong> <span th:text="${candidate.address}"></span></p>
             <p class="card-text"><strong>Phone:</strong> <span th:text="${candidate.phone}"></span></p>
             <p class="card-text"><strong>Email:</strong> <span th:text="${candidate.email}"></span></p>
@@ -37,14 +38,14 @@
 
     <h3 class="mt-4 mb-4">Skills</h3>
     <table class="table">
-    <thead>
-    <tr>
-        <th>More Info</th>
-        <th>Skill Level</th>
-        <th>Skill Name</th>
-        <th>Skill Description</th>
-        <th>Skill Type</th>
-    </tr>
+        <thead>
+        <tr>
+            <th>More Info</th>
+            <th>Skill Level</th>
+            <th>Skill Name</th>
+            <th>Skill Description</th>
+            <th>Skill Type</th>
+        </tr>
         <tbody>
         <tr th:each="canSkill : ${candidate.candidateSkills}">
             <td th:text="${canSkill.moreInfo}"></td>
@@ -57,7 +58,8 @@
     </table>
     <br>
 
-    <a class="btn btn-primary" th:href="@{/can/show-add-can-skill/{candidateId}(candidateId=${candidate.id})}">Add Skill</a>
+    <a class="btn btn-primary" th:href="@{/can/show-add-can-skill/{candidateId}(candidateId=${candidate.id})}">Add
+        Skill</a>
     <h3 class="mt-4 mb-2">Suggested Skills to Learn</h3>
     <ul>
         <li th:each="suggestedSkill : ${suggestedSkills}">
