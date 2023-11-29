@@ -52,6 +52,7 @@
             <th>Full Name</th>
             <th>Email</th>
             <th>Skill</th>
+            <th>Invite</th>
         </tr>
         </thead>
         <tbody>
@@ -66,6 +67,14 @@
                     </li>
                 </ul>
             </td>
+            <td>
+                <form th:action="@{/company/send-invitation}" method="post">
+                    <input type="hidden" name="id" th:value="${jobId}" />
+                    <input type="hidden" name="email" th:value="${candidate.email}" />
+                    <button type="submit" class="btn btn-primary">Invite</button>
+                </form>
+            </td>
+
         </tr>
         </tbody>
     </table>

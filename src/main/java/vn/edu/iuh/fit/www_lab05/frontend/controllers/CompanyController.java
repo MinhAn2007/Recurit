@@ -166,4 +166,12 @@ public class CompanyController {
         jobSkillService.save(jobSkill);
         return "redirect:/company/detailsJob/" + job.getId();
     }
+    @PostMapping("/send-invitation")
+    public String sendInvitation(@RequestParam("id") Long jobId,@RequestParam("email") String email,
+                                 Model model) {
+        companyService.sendEmail(email);
+
+
+        return "redirect:/company/detailsJob/" + jobId;
+    }
 }
