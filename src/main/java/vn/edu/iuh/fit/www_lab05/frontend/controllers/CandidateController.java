@@ -13,10 +13,7 @@ import vn.edu.iuh.fit.www_lab05.backend.enums.SkillLevel;
 import vn.edu.iuh.fit.www_lab05.backend.models.*;
 import vn.edu.iuh.fit.www_lab05.backend.repositories.AddressRepository;
 import vn.edu.iuh.fit.www_lab05.backend.repositories.CandidateRepository;
-import vn.edu.iuh.fit.www_lab05.backend.services.CandidateServices;
-import vn.edu.iuh.fit.www_lab05.backend.services.CandidateSkillService;
-import vn.edu.iuh.fit.www_lab05.backend.services.JobService;
-import vn.edu.iuh.fit.www_lab05.backend.services.SkillService;
+import vn.edu.iuh.fit.www_lab05.backend.services.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +35,8 @@ public class CandidateController {
     private SkillService skillService;
     @Autowired
     private JobService jobService;
+    @Autowired
+    private ExperienceServices experienceServices;
 
     @GetMapping("/list")
     public String showCandidateList(Model model) {
@@ -166,5 +165,24 @@ public class CandidateController {
 
         candidateSkillService.save(candidateSkill);
         return "redirect:/can/details/" + candidate.getId();
+    }
+
+    @GetMapping("/show-add-exp/{canId}")
+    public ModelAndView showAddExperienceForm(Model model,@PathVariable("canId") long canId) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("canId", canId);
+
+        modelAndView.addObject("experience", new Experience());
+        modelAndView.setViewName("candidates/addExp");
+        return modelAndView;
+    }
+
+    @PostMapping("/addExp")
+    public String addExperience(@ModelAttribute("experienceForm") Experience experience,            @RequestParam("canId") long canId
+                                ) {
+        Candidate candidate= candidateServices.getCandidateById(canId);
+        experience.setCandidate(candidate);
+        experienceServices.save(experience);
+        return "redirect:/can/details/" + canId;
     }
 }

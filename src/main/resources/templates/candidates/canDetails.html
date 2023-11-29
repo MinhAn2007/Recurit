@@ -11,7 +11,7 @@
 <body>
 
 <div class="container mt-3">
-    <a  class="btn btn-primary" href="http://localhost:8080/candidates/list">Back to List</a>
+    <a  class="btn btn-primary" href="http://localhost:8080/can/candidates">Back to List</a>
     <h2 class="mt-4 mb-4">Candidate Details</h2>
     <div class="card">
         <div class="card-body">
@@ -26,15 +26,26 @@
     </div>
 
     <h3 class="mt-4 mb-4">Experiences</h3>
-
-    <ul>
-        <li th:each="experience : ${candidate.experiences}">
-            <p th:text="${experience.position}"></p>
-            <p th:text="${experience.companyName}"></p>
-            <p th:text="${#temporals.format(experience.startDate, 'yyyy-MM-dd')}"></p>
-            <p th:text="${#temporals.format(experience.endDate, 'yyyy-MM-dd')}"></p>
-        </li>
-    </ul>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Role</th>
+            <th>Company Name</th>
+            <th>From Date</th>
+            <th>To Date</th>
+            <th>Description</th>
+        </tr>
+        <tbody>
+        <tr th:each="experience : ${candidate.experiences}">
+            <td th:text="${experience.role}"></td>
+            <td th:text="${experience.companyName}"></td>
+            <td th:text="${#temporals.format(experience.fromDate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${#temporals.format(experience.toDate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${experience.workDescription}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-primary" th:href="@{/can/show-add-exp/{candidateId}(candidateId=${candidate.id})}">Add Experience</a>
 
     <h3 class="mt-4 mb-4">Skills</h3>
     <table class="table">
