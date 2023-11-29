@@ -44,7 +44,6 @@ public class Candidate {
         this.email = email;
     }
 
-    //====================RELATIONSHIPS========================
     @OneToMany(mappedBy = "candidate", fetch = FetchType.LAZY)
     private List<Experience> experiences;
 
