@@ -81,6 +81,8 @@ Chọn file Application trong phần run
 ![img_2.png](image/img_2.png)
 
 Nhấn run ứng dụng. Truy cập URL http://localhost:8080/ để mở ứng dụng 
+
+Run file db.script trong folder DB để add dữ liệu test
 #### Chức năng
 
 Khi truy cập vào URL bạn sẽ truy cập được vào giao diện 
