@@ -8,9 +8,10 @@
         padding: 5px 5px;
         display: inline-block;
     }
+
     div.inline a.active {
         background-color: #FBD603;
-        border:1px solid darkred;
+        border: 1px solid darkred;
     }
 
 </style>
@@ -47,7 +48,9 @@
             </a>
 
 
-        </td>    </tr>
+        </td>
+        <td><a th:href="@{/can/details/{id}(id=${candidate.id})}">Details</a></td>
+    </tr>
     </tbody>
 </table>
 <div class="inline" th:if="${candidatePage.totalPages > 0}" th:each="pageNumber : ${pageNumbers}">

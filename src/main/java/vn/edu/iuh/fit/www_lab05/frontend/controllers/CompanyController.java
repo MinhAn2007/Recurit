@@ -51,6 +51,7 @@ public class CompanyController {
         model.addAttribute("company", company);
         return "company/details";
     }
+
     @GetMapping("/detailsJob/{jobId}")
     public String detailsJob(Model model, @PathVariable Long jobId) {
         Job job = jobService.getJobPostingById(jobId)
@@ -111,6 +112,7 @@ public class CompanyController {
 
         return "redirect:/company/details/" + companyId;
     }
+
     @PostMapping("/addSkill")
     public String addJobSkill(
             @ModelAttribute("job") Skill skill,
@@ -121,6 +123,7 @@ public class CompanyController {
 
         return "redirect:/company/list";
     }
+
     @GetMapping("/show-add-job-skill/{jobId}/{companyId}")
     public ModelAndView showAddJobSkillForm(Model model, @PathVariable("jobId") long jobId, @PathVariable("companyId") long companyId) {
         ModelAndView modelAndView = new ModelAndView();
@@ -134,17 +137,8 @@ public class CompanyController {
 
         return modelAndView;
     }
-    @GetMapping("/show-add-skill")
-    public ModelAndView showAddJobSkillForm(Model model) {
-        ModelAndView modelAndView = new ModelAndView();
 
-        Skill skill = new Skill();
-        modelAndView.addObject("skill", skill);
 
-        modelAndView.setViewName("company/addSkill");
-
-        return modelAndView;
-    }
 
     @PostMapping("/addJobSkill")
     public String addJobSkill(
@@ -152,7 +146,7 @@ public class CompanyController {
             @RequestParam("jobId") long jobId,
             @RequestParam("skillId") int skillId,
             @RequestParam("companyId") long companyId,
-            @RequestParam("skillLevel") SkillLevel skillLevel,  // Add this parameter
+            @RequestParam("skillLevel") SkillLevel skillLevel,
 
             Model model) {
 

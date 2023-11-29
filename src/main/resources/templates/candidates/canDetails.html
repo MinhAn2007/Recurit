@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container mt-3">
+    <h2 class="mt-4 mb-4">Candidate Details</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <p class="card-text"><strong>ID:</strong> <span th:text="${candidate.id}"></span></p>
+            <p class="card-text"><strong>Full Name:</strong> <span th:text="${candidate.fullName}"></span></p>
+            <p class="card-text"><strong>Date of Birth:</strong> <span th:text="${#temporals.format(candidate.dob, 'yyyy-MM-dd')}"></span></p>
+            <p class="card-text"><strong>Address:</strong> <span th:text="${candidate.address}"></span></p>
+            <p class="card-text"><strong>Phone:</strong> <span th:text="${candidate.phone}"></span></p>
+            <p class="card-text"><strong>Email:</strong> <span th:text="${candidate.email}"></span></p>
+        </div>
+    </div>
+
+    <h3 class="mt-4 mb-4">Experiences</h3>
+
+    <ul>
+        <li th:each="experience : ${candidate.experiences}">
+            <p th:text="${experience.position}"></p>
+            <p th:text="${experience.companyName}"></p>
+            <p th:text="${#temporals.format(experience.startDate, 'yyyy-MM-dd')}"></p>
+            <p th:text="${#temporals.format(experience.endDate, 'yyyy-MM-dd')}"></p>
+        </li>
+    </ul>
+
+    <h3 class="mt-4 mb-4">Skills</h3>
+    <table class="table">
+    <thead>
+    <tr>
+        <th>More Info</th>
+        <th>Skill Level</th>
+        <th>Skill Name</th>
+        <th>Skill Description</th>
+        <th>Skill Type</th>
+    </tr>
+        <tbody>
+        <tr th:each="canSkill : ${candidate.candidateSkills}">
+            <td th:text="${canSkill.moreInfo}"></td>
+            <td th:text="${canSkill.skillLevel.name()}"></td>
+            <td th:text="${canSkill.skill.skillName}"></td>
+            <td th:text="${canSkill.skill.skillDescription}"></td>
+            <td th:text="${canSkill.skill.type}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <a class="btn btn-primary" th:href="@{/can/show-add-can-skill/{candidateId}(candidateId=${candidate.id})}">Add Skill</a>
+</div>
+
+</body>
+</html>
