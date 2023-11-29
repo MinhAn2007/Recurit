@@ -115,8 +115,14 @@ public class CandidateController {
     public String detailsCan(Model model, @PathVariable Long canId) {
         Candidate candidate = candidateServices.getCandidateById(canId);
         List<Job> recommendedJobs = jobService.recommendJobsForCandidate(canId);
+        List<Skill> suggestedSkills = skillService.suggestSkillsForCandidate(canId);
         if (!recommendedJobs.isEmpty()) {
             model.addAttribute("recommendedJobs", recommendedJobs);
+        } else {
+            model.addAttribute("noJobsFound", true);
+        }
+        if (!suggestedSkills.isEmpty()) {
+            model.addAttribute("suggestedSkills", suggestedSkills);
         } else {
             model.addAttribute("noJobsFound", true);
         }
